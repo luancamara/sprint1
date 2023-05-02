@@ -161,4 +161,5 @@ func validateCreditCardPayment(credit: DebitCardPayment) {
      Cada transação deve ter um método validate() que verifica se os dados da transação são válidos.
  
  */
+    .
 
