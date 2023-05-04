@@ -7,18 +7,12 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-}
-
 
 // Transaction
 
 class Transaction {
     
-    var amount: Double
+    let amount: Double
     
     func validate() -> Bool {
         return true
@@ -38,11 +32,11 @@ class Transaction {
 
 class DigitalWalletPayment: Transaction {
     
-    var walletNumber: String?
+    let walletNumber: String?
     
-    init(walletNumber: String? = nil) {
+    init(walletNumber: String? = nil, amount: Double) {
         self.walletNumber = walletNumber
-        super.init(amount: 0.00)
+        super.init(amount: amount)
     }
     override func validate() -> Bool {
         
@@ -63,18 +57,18 @@ class DigitalWalletPayment: Transaction {
 
 class CreditCardPayment: Transaction {
 
-    var cardNumber: String?
-    var expirationdate: String?
-    var securityCode: String?
-    var cardHolderName: String?
+    let cardNumber: String?
+    let expirationdate: String?
+    let securityCode: String?
+    let cardHolderName: String?
     
 
-    init(cardNumber: String? = nil, expirationdate: String? = nil, securityCode: String? = nil, cardHolderName: String? = nil) {
+    init(cardNumber: String? = nil, expirationdate: String? = nil, securityCode: String? = nil, cardHolderName: String? = nil, amount: Double) {
         self.cardNumber = cardNumber
         self.expirationdate = expirationdate
         self.securityCode = securityCode
         self.cardHolderName = cardHolderName
-        super.init(amount: 0.00)
+        super.init(amount: amount)
     }
     override func validate() -> Bool {
         if cardNumber != nil && expirationdate != nil && securityCode != nil && cardHolderName != nil && amount > 0 {
@@ -94,13 +88,13 @@ class CreditCardPayment: Transaction {
 
 class BankTransfer: Transaction {
     
-    var sourceAccount: String?
-    var destinationAccount: String?
+    let sourceAccount: String?
+    let destinationAccount: String?
     
-    init(sourceAccount: String? = nil, destinationAccount: String? = nil) {
+    init(sourceAccount: String? = nil, destinationAccount: String? = nil, amount: Double) {
         self.sourceAccount = sourceAccount
         self.destinationAccount = destinationAccount
-        super.init(amount: 0.00)
+        super.init(amount: amount)
     }
     
     override func validate() -> Bool {
@@ -120,17 +114,17 @@ class BankTransfer: Transaction {
 
 class DebitCardPayment: Transaction {
     
-    var cardNumber: String?
-    var expirationdate: String?
-    var securityCode: String?
-    var cardHolderName: String?
+    let cardNumber: String?
+    let expirationdate: String?
+    let securityCode: String?
+    let cardHolderName: String?
     
-    init(cardNumber: String? = nil, expirationdate: String? = nil, securityCode: String? = nil, cardHolderName: String? = nil) {
+    init(cardNumber: String? = nil, expirationdate: String? = nil, securityCode: String? = nil, cardHolderName: String? = nil, amount: Double) {
         self.cardNumber = cardNumber
         self.expirationdate = expirationdate
         self.securityCode = securityCode
         self.cardHolderName = cardHolderName
-        super.init(amount: 0)
+        super.init(amount: amount)
     }
     
     override func validate() -> Bool {
@@ -153,15 +147,10 @@ class TransactionProcessor: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let bank = BankTransfer(sourceAccount: "CiclanoAccount", destinationAccount: "FulanoAccount")
-        let credit = CreditCardPayment(cardNumber: "32029483", expirationdate: "02/2030", securityCode: "098", cardHolderName: "Ciclano da Silva")
-        let debit = DebitCardPayment(cardNumber: "23344555", expirationdate: "03/2028", securityCode: "897", cardHolderName: "Fulano dos Santos")
-        let digitalWallet = DigitalWalletPayment(walletNumber: "2380")
-        
-        bank.amount = 50.00
-        credit.amount = 100.00
-        debit.amount = 75.00
-        digitalWallet.amount = 180.00
+        let bank = BankTransfer(sourceAccount: "CiclanoAccount", destinationAccount: "FulanoAccount", amount: 50)
+        let credit = CreditCardPayment(cardNumber: "32029483", expirationdate: "02/2030", securityCode: "098", cardHolderName: "Ciclano da Silva", amount: 75)
+        let debit = DebitCardPayment(cardNumber: "23344555", expirationdate: "03/2028", securityCode: "897", cardHolderName: "Fulano dos Santos", amount: 39)
+        let digitalWallet = DigitalWalletPayment(walletNumber: "2380", amount: 180)
         
         let array = [bank, credit, debit, digitalWallet]
         
