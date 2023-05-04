@@ -76,8 +76,6 @@ class BankTransfer: Transaction {
     override func processTransaction() { }
 }
 
-
-
 class CreditCardPayment: CardPayment {
     override init(
         cardNumber: Int,
@@ -103,7 +101,28 @@ class CreditCardPayment: CardPayment {
 }
 
 class DebitCardPayment: CardPayment {
+    override init(
+        cardNumber: Int,
+        cardExpirationDate: String,
+        cardSecurityCode: Int,
+        cardHolderName: String,
+        amount: Double
+    ) {
+        super.init(
+            cardNumber: cardNumber,
+            cardExpirationDate: cardExpirationDate,
+            cardSecurityCode: cardSecurityCode,
+            cardHolderName: cardHolderName,
+            amount: amount
+        )
+    }
     
+    override func validate() -> Bool {
+        return true
+    }
+    
+    override func processTransaction() { }
+
 }
 
 class DigitalWalletPayment: Transaction {
