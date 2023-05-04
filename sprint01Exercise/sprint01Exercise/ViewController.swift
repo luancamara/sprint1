@@ -121,7 +121,7 @@ final class DebitCardPayment: Transaction {
     }
     
     override func validate() -> Bool {
-        if cardNumber != nil &&
+        if cardNumber?.count == 16 &&
             expirationdate != nil &&
             securityCode != nil &&
             cardHolderName != nil &&
@@ -135,7 +135,7 @@ final class DebitCardPayment: Transaction {
     }
     
     override func processTransaction() {
-        validate() ? print("Pagamento com cartão de débito realizado com sucesso.") : print("ERRO! - Pagamento com cartão de débito cancelado.")
+        print(validate() ?  "Pagamento com cartão de débito realizado com sucesso." : "ERRO! - Pagamento com cartão de débito cancelado.")
     }
 }
 
@@ -158,9 +158,9 @@ final class CreditCardPayment: Transaction {
         super.init(amount: amount)
     }
     override func validate() -> Bool {
-        if cardNumber != nil &&
+        if cardNumber?.count == 16 &&
             expirationdate != nil &&
-            securityCode != nil &&
+            securityCode?.count == 3 &&
             cardHolderName != nil &&
             amount > 0 && amount < account.credicardLimit
         {
@@ -175,7 +175,6 @@ final class CreditCardPayment: Transaction {
         print( validate() ? "Pagamento com cartão de crédito realizado com sucesso." : "ERRO! - Pagamento com cartão de crédito cancelado.")
     }
     
-    
 }
 
 
@@ -187,8 +186,8 @@ final class TransactionProcessor: UIViewController {
         super.viewDidLoad()
         
         let bankPayment = BankTransfer(sourceAccount: "CiclanoAccount", destinationAccount: "FulanoAccount", amount: 150)
-        let creditPayment = CreditCardPayment(cardNumber: "32029483", expirationdate: "02/2030", securityCode: "098", cardHolderName: "Ciclano da Silva", amount: 1500)
-        let debitPayment = DebitCardPayment(cardNumber: "23344555", expirationdate: "03/2028", securityCode: "897", cardHolderName: "Fulano dos Santos", amount: 39)
+        let creditPayment = CreditCardPayment(cardNumber: "3202948390878909", expirationdate: "02/2030", securityCode: "098", cardHolderName: "Ciclano da Silva", amount: 700)
+        let debitPayment = DebitCardPayment(cardNumber: "2334455509871234", expirationdate: "03/2028", securityCode: "897", cardHolderName: "Fulano dos Santos", amount: 39)
         let digitalWalletPayment = DigitalWalletPayment(walletNumber: "2380", amount: 200)
         let digitalWalletPayment2 = DigitalWalletPayment(walletNumber: "2380", amount: 20)
         
