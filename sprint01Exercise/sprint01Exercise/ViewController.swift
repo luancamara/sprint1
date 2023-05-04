@@ -13,12 +13,14 @@ import UIKit
 class Transaction {
     
     let amount: Double
+//    var balance: Double = 500.00
     
     func validate() -> Bool {
         return true
     }
+    
     func processTransaction() {
-        validate() ? print("Transaction done") : print("Transaction canceled. Invalid data")
+        print( validate() ? "Transação realizada" : "ERRO! - Transação cancelada.")
     }
     
     init(amount: Double) {
@@ -27,69 +29,52 @@ class Transaction {
 
 }
 
+class Account {
+
+    static let accountShared = Account()
+    var balance: Double = 500.00
+
+    private init() {}
+    
+}
 
 // DigitalWalletPayment
 
-class DigitalWalletPayment: Transaction {
-    
-    let walletNumber: String?
+final class DigitalWalletPayment: Transaction {
+        
+    let account = Account.accountShared
+    private let walletNumber: String?
     
     init(walletNumber: String? = nil, amount: Double) {
         self.walletNumber = walletNumber
         super.init(amount: amount)
     }
+    
     override func validate() -> Bool {
         
-        if walletNumber != nil && amount > 0 {
+        if walletNumber != nil && amount > 0 && amount <= account.balance {
+            account.balance -= amount
+            print(account.balance)
             return true
         }
+        
         return false
     }
     
     override func processTransaction() {
-        validate() ? print("DigitalWalletPayment done") : print("DigitalWalletPayment canceled. Invalid data")
+        print(validate() ? "Pagamento com carteira digital realizado com sucesso." : "ERRO! - Pagamento com carteira digital cancelado.")
     }
-    
-}
-
-
-// CreditCardPayment
-
-class CreditCardPayment: Transaction {
-
-    let cardNumber: String?
-    let expirationdate: String?
-    let securityCode: String?
-    let cardHolderName: String?
-    
-
-    init(cardNumber: String? = nil, expirationdate: String? = nil, securityCode: String? = nil, cardHolderName: String? = nil, amount: Double) {
-        self.cardNumber = cardNumber
-        self.expirationdate = expirationdate
-        self.securityCode = securityCode
-        self.cardHolderName = cardHolderName
-        super.init(amount: amount)
-    }
-    override func validate() -> Bool {
-        if cardNumber != nil && expirationdate != nil && securityCode != nil && cardHolderName != nil && amount > 0 {
-            return true
-        }
-        return false
-    }
-    
-    override func processTransaction() {
-        validate() ? print("CreditCardPayment done") : print("CreditCardPayment canceled. Invalid data")
-    }
-    
     
 }
 
 // BankTransfer
 
-class BankTransfer: Transaction {
+final class BankTransfer: Transaction {
     
-    let sourceAccount: String?
-    let destinationAccount: String?
+    private let sourceAccount: String?
+    private let destinationAccount: String?
+    let account = Account.accountShared
+
     
     init(sourceAccount: String? = nil, destinationAccount: String? = nil, amount: Double) {
         self.sourceAccount = sourceAccount
@@ -98,27 +83,30 @@ class BankTransfer: Transaction {
     }
     
     override func validate() -> Bool {
-        if sourceAccount != nil && destinationAccount != nil && amount > 0 {
+        if sourceAccount != nil && destinationAccount != nil && amount <= account.balance {
+            account.balance -= amount
+            print(account.balance)
             return true
         }
         return false
     }
     
     override func processTransaction() {
-        validate() ? print("BankTransfer done") : print("BankTransfer canceled. Invalid data")
+        print( validate() ? "Tranferência bancária realizada com sucesso." : "ERRO! - Tranferência bancária cancelada.")
     }
 }
 
 
 // DebitCardPayment
 
-class DebitCardPayment: Transaction {
+final class DebitCardPayment: Transaction {
     
-    let cardNumber: String?
-    let expirationdate: String?
-    let securityCode: String?
-    let cardHolderName: String?
-    
+    private let cardNumber: String?
+    private let expirationdate: String?
+    private let securityCode: String?
+    private let cardHolderName: String?
+    let account = Account.accountShared
+
     init(cardNumber: String? = nil, expirationdate: String? = nil, securityCode: String? = nil, cardHolderName: String? = nil, amount: Double) {
         self.cardNumber = cardNumber
         self.expirationdate = expirationdate
@@ -128,6 +116,38 @@ class DebitCardPayment: Transaction {
     }
     
     override func validate() -> Bool {
+        if cardNumber != nil && expirationdate != nil && securityCode != nil && cardHolderName != nil && amount > 0 && amount <= account.balance {
+            account.balance -= amount
+            print(account.balance)
+            return true
+        }
+        return false
+    }
+    
+    override func processTransaction() {
+        validate() ? print("Pagamento com cartão de débito realizado com sucesso.") : print("ERRO! - Pagamento com cartão de débito cancelado.")
+    }
+}
+
+
+// CreditCardPayment
+
+final class CreditCardPayment: Transaction {
+
+    private let cardNumber: String?
+    private let expirationdate: String?
+    private let securityCode: String?
+    private let cardHolderName: String?
+    
+
+    init(cardNumber: String? = nil, expirationdate: String? = nil, securityCode: String? = nil, cardHolderName: String? = nil, amount: Double) {
+        self.cardNumber = cardNumber
+        self.expirationdate = expirationdate
+        self.securityCode = securityCode
+        self.cardHolderName = cardHolderName
+        super.init(amount: amount)
+    }
+    override func validate() -> Bool {
         if cardNumber != nil && expirationdate != nil && securityCode != nil && cardHolderName != nil && amount > 0 {
             return true
         }
@@ -135,24 +155,27 @@ class DebitCardPayment: Transaction {
     }
     
     override func processTransaction() {
-        validate() ? print("DebitCardPayment done") : print("DebitCardPayment canceled. Invalid data")
+        print( validate() ? "Pagamento com cartão de crédito realizado com sucesso." : "ERRO! - Pagamento com cartão de crédito cancelado.")
     }
+    
+    
 }
 
 
 // TransactionProcessor
 
-class TransactionProcessor: UIViewController {
+final class TransactionProcessor: UIViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let bank = BankTransfer(sourceAccount: "CiclanoAccount", destinationAccount: "FulanoAccount", amount: 50)
-        let credit = CreditCardPayment(cardNumber: "32029483", expirationdate: "02/2030", securityCode: "098", cardHolderName: "Ciclano da Silva", amount: 75)
-        let debit = DebitCardPayment(cardNumber: "23344555", expirationdate: "03/2028", securityCode: "897", cardHolderName: "Fulano dos Santos", amount: 39)
-        let digitalWallet = DigitalWalletPayment(walletNumber: "2380", amount: 180)
-        
-        let array = [bank, credit, debit, digitalWallet]
+        let bankPayment = BankTransfer(sourceAccount: "CiclanoAccount", destinationAccount: "FulanoAccount", amount: 150)
+        let creditPayment = CreditCardPayment(cardNumber: "32029483", expirationdate: "02/2030", securityCode: "098", cardHolderName: "Ciclano da Silva", amount: 75)
+        let debitPayment = DebitCardPayment(cardNumber: "23344555", expirationdate: "03/2028", securityCode: "897", cardHolderName: "Fulano dos Santos", amount: 39)
+        let digitalWalletPayment = DigitalWalletPayment(walletNumber: "2380", amount: 200)
+        let digitalWalletPayment2 = DigitalWalletPayment(walletNumber: "2380", amount: 200)
+
+        let array = [bankPayment, creditPayment, debitPayment, digitalWalletPayment, digitalWalletPayment2]
         
         array.forEach {
             $0.processTransaction()
