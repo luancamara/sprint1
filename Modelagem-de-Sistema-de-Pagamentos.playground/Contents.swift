@@ -1,7 +1,7 @@
 import UIKit
 
 class Transaction {
-    var valor: Int
+    let valor: Int
     
     init(valor: Int) {
         self.valor = valor
@@ -10,16 +10,18 @@ class Transaction {
     func processTransaction() {
         print("Processo de transação")
     }
+    
+    func validate() { }
 }
 
 class BankTransfer: Transaction {
-    var contaOrigem: Int = 0
-    var contaDestino: Int = 0
+    let contaOrigem: Int
+    let contaDestino: Int
     
-    init(contaOrigem: Int, contaDestino: Int) {
+    init(contaOrigem: Int, contaDestino: Int, valor: Int) {
         self.contaOrigem  = contaOrigem
         self.contaDestino = contaDestino
-        super.init(valor: 0)
+        super.init(valor: valor)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -30,54 +32,79 @@ class BankTransfer: Transaction {
         super.processTransaction()
         print("Conta e destino estão corretos")
     }
+    
+    override func validate() { }
 }
 
 class CreditCardPayment: Transaction {
-    var numeroCartao: String
-    var dataVencimento: Int
-    var codigoSeguranca: Int
-    var nomeTitularCartao: String
+    let numeroCartao: String
+    let dataVencimento: Int
+    let codigoSeguranca: Int
+    let nomeTitularCartao: String
     
-    init(numeroCartao: String, dataVencimento: Int, codigoSeguranca: Int, nomeTitularCartao: String ) {
+    init(numeroCartao: String, dataVencimento: Int, codigoSeguranca: Int, nomeTitularCartao: String, valor: Int ) {
         self.numeroCartao = numeroCartao
         self.dataVencimento = dataVencimento
         self.codigoSeguranca = codigoSeguranca
         self.nomeTitularCartao = nomeTitularCartao
-        super.init(valor: 0)
+        super.init(valor: valor)
     }
     
     override func processTransaction() {
         super.processTransaction()
         print("Pagamento com Cartão de Crédito efetuado com Sucesso")
     }
+    override func validate() {
+    let number: Int = 6500400300322110
+    let cvc: Int = 356
+    let name: String = "Lebron James"
+    let nameCard: String = "Lebron James"
+    let dateCard: String = "12/28"
+        
+        if number == 16 && cvc == 3 && name == nameCard && dateCard == dateCard {
+            print("Informações conferem com o Cartão Cadastrado")
+        } else {
+            print("Atenção!! As informações estão incorretas")
+        }
+    }
 }
 
 class DebitCardPayment: Transaction{
-    var numeroCartao: String
-    var dataVencimento: Int
-    var codigoSeguranca: Int
-    var nomeTitularCartao: String
+    let numeroCartao: String
+    let dataVencimento: Int
+    let codigoSeguranca: Int
+    let nomeTitularCartao: String
     
-    init(numeroCartao: String, dataVencimento: Int, codigoSeguranca: Int, nomeTitularCartao: String ) {
+    init(numeroCartao: String, dataVencimento: Int, codigoSeguranca: Int, nomeTitularCartao: String, valor: Int ) {
         self.numeroCartao = numeroCartao
         self.dataVencimento = dataVencimento
         self.codigoSeguranca = codigoSeguranca
         self.nomeTitularCartao = nomeTitularCartao
-        super.init(valor: 0)
+        super.init(valor: valor)
     }
     
     override func processTransaction() {
         super.processTransaction()
         print("Pagamento com Cartão de Débito efetuado com Sucesso")
     }
+    
+    override func validate() {
+        let password: Int = 04567346
+        if password == 8 {
+            print("Senha valida. Compra Efetuada com Sucesso")
+        } else {
+            print("Senha incorreta. Digitar a senha correta do cartão")
+        }
+    }
+
 }
 
 class DigitalWalletPayment: Transaction {
     var numeroCarteiraDigital: Int
     
-    init(numeroCarteiraDigital: Int) {
+    init(numeroCarteiraDigital: Int, valor: Int) {
         self.numeroCarteiraDigital = numeroCarteiraDigital
-        super.init(valor: 0)
+        super.init(valor: valor)
     }
     
     override func processTransaction() {
@@ -87,25 +114,27 @@ class DigitalWalletPayment: Transaction {
 }
 
 class TransactionProcessor {
-    func processTransactions() {
-        var transaction = [Transaction].self
+    func processTransactions(transaction:[Transaction] ) {
+        for transactions in transaction {
+            transaction.count
+        }
 //        self.transaction.count
     }
 }
 
-func validateCreditCardPayment(credit: CreditCardPayment) {
-    
-    if credit.numeroCartao != nil && credit.dataVencimento != nil && credit.codigoSeguranca != nil && credit.nomeTitularCartao != nil {
-        print("Pagamento com Cartão de Crédito validado")
-    }
-}
-
-func validateCreditCardPayment(credit: DebitCardPayment) {
-    
-    if credit.numeroCartao != nil && credit.dataVencimento != nil && credit.codigoSeguranca != nil && credit.nomeTitularCartao != nil {
-        print("Pagamento com Cartão de Débito validado")
-    }
-}
+//func validateCreditCardPayment(credit: CreditCardPayment) {
+//
+//    if credit.numeroCartao != nil && credit.dataVencimento != nil && credit.codigoSeguranca != nil && credit.nomeTitularCartao != nil {
+//        print("Pagamento com Cartão de Crédito validado")
+//    }
+//}
+//
+//func validateCreditCardPayment(credit: DebitCardPayment) {
+//
+//    if credit.numeroCartao != nil && credit.dataVencimento != nil && credit.codigoSeguranca != nil && credit.nomeTitularCartao != nil {
+//        print("Pagamento com Cartão de Débito validado")
+//    }
+//}
 
 
 /*
@@ -161,5 +190,4 @@ func validateCreditCardPayment(credit: DebitCardPayment) {
      Cada transação deve ter um método validate() que verifica se os dados da transação são válidos.
  
  */
-    .
 
