@@ -10,6 +10,7 @@ enum ValidationError: Error {
     case invalidSourceAccount
     case invalidDestinationAccount
     case invalidTransaction
+    case invalidBalance
     
     var messageResult: String {
         switch self {
@@ -29,16 +30,29 @@ enum ValidationError: Error {
             return "ERROR: Não existe conta de destino"
         case .invalidTransaction:
             return "ERROR: Transação cancelada"
+        case .invalidBalance:
+            return "ERROR: Não tem saldo na conta"
         }
+    }
+}
+
+// MARK: - Account
+class Account {
+    var balance: Double = 1000
+    
+    init(balance: Double) {
+        self.balance = balance
     }
 }
 
 // MARK: - Transaction
 class Transaction {
+    let account: Account
     let amount: Double
     
-    init(amount: Double) {
+    init(amount: Double, account: Account) {
         self.amount = amount
+        self.account = account
     }
     
     func validate() throws {
@@ -58,12 +72,13 @@ class BankTransfer: Transaction {
     init(
         sourceAccount: String,
         destinationAccount: String,
-        amount: Double
+        amount: Double,
+        account: Account
     ) {
         self.sourceAccount = sourceAccount
         self.destinationAccount = destinationAccount
         
-        super.init(amount: amount)
+        super.init(amount: amount, account: account)
     }
     
     override func validate() throws {
@@ -80,6 +95,11 @@ class BankTransfer: Transaction {
         // Verifica se o saldo é maior que 0
         guard amount > 0 else {
             throw ValidationError.invalidAmount
+        }
+        
+        // Verifica se a conta tem saldo
+        guard account.balance > 0 else {
+            throw ValidationError.invalidBalance
         }
     }
     
@@ -100,13 +120,15 @@ class CreditCardPayment: Transaction {
         cardExpirationString: String,
         cardSecurityCode: Int,
         cardHolderName: String,
-        amount: Double
+        amount: Double,
+        account: Account
     ) {
         self.cardNumber = cardNumber
         self.cardExpirationString = cardExpirationString
         self.cardSecurityCode = cardSecurityCode
         self.cardHolderName = cardHolderName
-        super.init(amount: amount)
+        
+        super.init(amount: amount, account: account)
     }
 
     override func validate() throws {
@@ -155,13 +177,15 @@ class DebitCardPayment: Transaction {
         cardExpirationString: String,
         cardSecurityCode: Int,
         cardHolderName: String,
-        amount: Double
+        amount: Double,
+        account: Account
     ) {
         self.cardNumber = cardNumber
         self.cardExpirationString = cardExpirationString
         self.cardSecurityCode = cardSecurityCode
         self.cardHolderName = cardHolderName
-        super.init(amount: amount)
+        
+        super.init(amount: amount, account: account)
     }
 
     override func validate() throws {
@@ -204,11 +228,12 @@ class DigitalWalletPayment: Transaction {
 
     init(
         digitalWalletNumber: Int,
-        amount: Double
+        amount: Double,
+        account: Account
     ) {
         self.digitalWalletNumber = digitalWalletNumber
 
-        super.init(amount: amount)
+        super.init(amount: amount, account: account)
     }
 
     override func validate() throws {
@@ -248,14 +273,18 @@ class TransactionProcessor {
 let bankPayment = BankTransfer(
     sourceAccount: "thyago",
     destinationAccount: "Raphael",
-    amount: 20)
+    amount: 20,
+    account: .init(balance: 0)
+)
+
 
 let creditCardPayment = CreditCardPayment(
     cardNumber: 1111111111111111,
     cardExpirationString: "10/11/2024",
     cardSecurityCode: 111,
     cardHolderName: "Thyago",
-    amount: 120
+    amount: 120,
+    account: .init(balance: 1000)
 )
 
 let debitCardPayment = DebitCardPayment(
@@ -263,12 +292,14 @@ let debitCardPayment = DebitCardPayment(
     cardExpirationString: "11/10/2025",
     cardSecurityCode: 222,
     cardHolderName: "Raphael",
-    amount: 150
+    amount: 150,
+    account: .init(balance: 30)
 )
 
 let digitalWalletPayment = DigitalWalletPayment(
     digitalWalletNumber: 123456,
-    amount: 200
+    amount: 200,
+    account: .init(balance: 0)
 )
 
 let transactions = [
