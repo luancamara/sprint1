@@ -24,10 +24,6 @@ class BankTransfer: Transaction {
         super.init(valor: valor)
     }
     
-    required init?(coder aDecoder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-    
     override func processTransaction() {
         super.processTransaction()
         print("Conta e destino estão corretos")
@@ -54,6 +50,7 @@ class CreditCardPayment: Transaction {
         super.processTransaction()
         print("Pagamento com Cartão de Crédito efetuado com Sucesso")
     }
+    #if DEBUG && targetEnvironment(simulator)
     override func validate() {
     let number: Int = 6500400300322110
     let cvc: Int = 356
@@ -61,12 +58,13 @@ class CreditCardPayment: Transaction {
     let nameCard: String = "Lebron James"
     let dateCard: String = "12/28"
         
-        if number == 16 && cvc == 3 && name == nameCard && dateCard == dateCard {
+        if number == number.count && cvc == cvc.count && name == nameCard && dateCard == dateCard {
             print("Informações conferem com o Cartão Cadastrado")
         } else {
             print("Atenção!! As informações estão incorretas")
         }
     }
+    #endif
 }
 
 class DebitCardPayment: Transaction{
@@ -87,16 +85,16 @@ class DebitCardPayment: Transaction{
         super.processTransaction()
         print("Pagamento com Cartão de Débito efetuado com Sucesso")
     }
-    
+#if DEBUG && targetEnvironment(simulator)
     override func validate() {
         let password: Int = 04567346
-        if password == 8 {
+        if password == password.count {
             print("Senha valida. Compra Efetuada com Sucesso")
         } else {
             print("Senha incorreta. Digitar a senha correta do cartão")
         }
     }
-
+    #endif
 }
 
 class DigitalWalletPayment: Transaction {
@@ -118,7 +116,23 @@ class TransactionProcessor {
         for transactions in transaction {
             transaction.count
         }
-//        self.transaction.count
+    }
+}
+
+class CreatyAccount {
+    let fullName: String
+    let cpf: Int
+    let address: String
+    let dateBirth: Date
+    let state: String
+    let city: String
+    
+    init(fullName: String, cpf: Int, address: String, dateBirth: Date, state: String, city: String) {
+        self.fullName = fullName
+        self.cpf = cpf
+        self.address = address
+        self.dateBirth = dateBirth
+        self.city = city
     }
 }
 
