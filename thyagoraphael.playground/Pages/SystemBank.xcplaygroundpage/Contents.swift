@@ -89,175 +89,145 @@ class BankTransfer: Transaction {
 }
 
 // MARK: - CreditCardPayment
-//class CreditCardPayment: Transaction {
-//    let cardNumber: Int
-//    let cardExpirationString: String
-//    let cardSecurityCode: Int
-//    let cardHolderName: String
-//
-//    init(
-//        cardNumber: Int,
-//        cardExpirationString: String,
-//        cardSecurityCode: Int,
-//        cardHolderName: String,
-//        amount: Double
-//    ) {
-//        self.cardNumber = cardNumber
-//        self.cardExpirationString = cardExpirationString
-//        self.cardSecurityCode = cardSecurityCode
-//        self.cardHolderName = cardHolderName
-//        super.init(amount: amount)
-//    }
-//
-//    override func validate() -> Bool {
-//        // Verifica se o cartão possui 16 digitos
-//        let convertCardNumberToString = String(cardNumber)
-//        if convertCardNumberToString.count != 16 {
-//            print(ValidationResultPayment.invalidCardNumber.messageResult)
-//            return false
-//        }
-//
-//        // Verifica se a data está vazia
-//        guard !cardExpirationString.isEmpty else {
-//            print(ValidationResultPayment.expiredCard.messageResult)
-//            return false
-//        }
-//
-//        // Verifica se o cartão possui 3 digitos
-//        let convertCardSecurityToString = String(cardSecurityCode)
-//        if convertCardSecurityToString.count != 3 {
-//            print(ValidationResultPayment.invalidCardSecutiryCode.messageResult)
-//            return false
-//        }
-//
-//        // Verifica se o titular do cartão não está vazio
-//        guard !cardHolderName.isEmpty else {
-//            print(ValidationResultPayment.invalidCardHoldName.messageResult)
-//            return false
-//        }
-//
-//        // Verifica se o saldo é maior que 0
-//        guard amount > 0 else {
-//            print(ValidationResultPayment.invalidAmount.messageResult)
-//            return false
-//        }
-//
-//        return true
-//    }
-//
-//    override func processTransaction() {
-//        print(
-//            validate()
-//            ? "\(ValidationResultPayment.success.messageResult)"
-//            : "\(ValidationResultPayment.invalidTransaction.messageResult)"
-//        )
-//    }
-//}
-//
-//// MARK: - DebitCardPayment
-//class DebitCardPayment: Transaction {
-//    let cardNumber: Int
-//    let cardExpirationString: String
-//    let cardSecurityCode: Int
-//    let cardHolderName: String
-//
-//    init(
-//        cardNumber: Int,
-//        cardExpirationString: String,
-//        cardSecurityCode: Int,
-//        cardHolderName: String,
-//        amount: Double
-//    ) {
-//        self.cardNumber = cardNumber
-//        self.cardExpirationString = cardExpirationString
-//        self.cardSecurityCode = cardSecurityCode
-//        self.cardHolderName = cardHolderName
-//        super.init(amount: amount)
-//    }
-//
-//    override func validate() -> Bool {
-//        // Verifica se o cartão possui 16 digitos
-//        let convertCardNumberToString = String(cardNumber)
-//        guard convertCardNumberToString.count == 16 else {
-//            print(ValidationResultPayment.invalidCardNumber.messageResult)
-//            return false
-//        }
-//
-//        // Verifica se a data está vazia
-//        guard !cardExpirationString.isEmpty else {
-//            print(ValidationResultPayment.expiredCard.messageResult)
-//            return false
-//        }
-//
-//        // Verifica se o cartão possui 3 digitos
-//        let convertCardSecurityToString = String(cardSecurityCode)
-//        guard convertCardSecurityToString.count == 3 else {
-//            print(ValidationResultPayment.invalidCardSecutiryCode.messageResult)
-//            return false
-//        }
-//
-//        // Verifica se o titular do cartão não está vazio
-//        guard !cardHolderName.isEmpty else {
-//            print(ValidationResultPayment.invalidCardHoldName.messageResult)
-//            return false
-//        }
-//
-//        // Verifica se o saldo é maior que 0
-//        guard amount > 0 else {
-//            print(ValidationResultPayment.invalidAmount.messageResult)
-//            return false
-//        }
-//
-//        return true
-//    }
-//
-//    override func processTransaction() {
-//        print(
-//            validate()
-//            ? "\(ValidationResultPayment.success.messageResult)"
-//            : "\(ValidationResultPayment.invalidTransaction.messageResult)"
-//        )
-//    }
-//}
-//
-//// MARK: - DigitalWalletPayment
-//class DigitalWalletPayment: Transaction {
-//    let digitalWalletNumber: Int
-//
-//    init(
-//        digitalWalletNumber: Int,
-//        amount: Double
-//    ) {
-//        self.digitalWalletNumber = digitalWalletNumber
-//
-//        super.init(amount: amount)
-//    }
-//
-//    override func validate() -> Bool {
-//        // Verifica se existe número da conta digital
-//        let convertDigitalWalletNumberToString = String(digitalWalletNumber)
-//        guard !convertDigitalWalletNumberToString.isEmpty else {
-//            print(ValidationResultPayment.invalidCardNumber.messageResult)
-//            return false
-//        }
-//
-//        // Verifica se o saldo é maior que 0
-//        guard amount > 0 else {
-//            print(ValidationResultPayment.invalidAmount.messageResult)
-//            return false
-//        }
-//
-//        return true
-//    }
-//
-//    override func processTransaction() {
-//        print(
-//            validate()
-//            ? "\(ValidationResultPayment.success.messageResult)"
-//            : "\(ValidationResultPayment.invalidTransaction.messageResult)"
-//        )
-//    }
-//}
+class CreditCardPayment: Transaction {
+    let cardNumber: Int
+    let cardExpirationString: String
+    let cardSecurityCode: Int
+    let cardHolderName: String
+
+    init(
+        cardNumber: Int,
+        cardExpirationString: String,
+        cardSecurityCode: Int,
+        cardHolderName: String,
+        amount: Double
+    ) {
+        self.cardNumber = cardNumber
+        self.cardExpirationString = cardExpirationString
+        self.cardSecurityCode = cardSecurityCode
+        self.cardHolderName = cardHolderName
+        super.init(amount: amount)
+    }
+
+    override func validate() throws {
+        // Verifica se o cartão possui 16 digitos
+        let convertCardNumberToString = String(cardNumber)
+        guard convertCardNumberToString.count == 16 else {
+            throw ValidationError.invalidCardNumber
+        }
+
+        // Verifica se a data está vazia
+        guard !cardExpirationString.isEmpty else {
+            throw ValidationError.expiredCard
+        }
+
+        // Verifica se o cartão possui 3 digitos
+        let convertCardSecurityToString = String(cardSecurityCode)
+        guard convertCardSecurityToString.count == 3 else {
+            throw ValidationError.invalidCardSecutiryCode
+        }
+
+        // Verifica se o titular do cartão não está vazio
+        guard !cardHolderName.isEmpty else {
+            throw ValidationError.invalidCardHoldName
+        }
+
+        // Verifica se o saldo é maior que 0
+        guard amount > 0 else {
+            throw ValidationError.invalidAmount
+        }
+    }
+
+    override func processTransaction() throws {
+        try validate()
+    }
+}
+
+// MARK: - DebitCardPayment
+class DebitCardPayment: Transaction {
+    let cardNumber: Int
+    let cardExpirationString: String
+    let cardSecurityCode: Int
+    let cardHolderName: String
+
+    init(
+        cardNumber: Int,
+        cardExpirationString: String,
+        cardSecurityCode: Int,
+        cardHolderName: String,
+        amount: Double
+    ) {
+        self.cardNumber = cardNumber
+        self.cardExpirationString = cardExpirationString
+        self.cardSecurityCode = cardSecurityCode
+        self.cardHolderName = cardHolderName
+        super.init(amount: amount)
+    }
+
+    override func validate() throws {
+        // Verifica se o cartão possui 16 digitos
+        let convertCardNumberToString = String(cardNumber)
+        guard convertCardNumberToString.count == 16 else {
+            throw ValidationError.invalidCardNumber
+        }
+
+        // Verifica se a data está vazia
+        guard !cardExpirationString.isEmpty else {
+            throw ValidationError.expiredCard
+        }
+
+        // Verifica se o cartão possui 3 digitos
+        let convertCardSecurityToString = String(cardSecurityCode)
+        guard convertCardSecurityToString.count == 3 else {
+            throw ValidationError.invalidCardSecutiryCode
+        }
+
+        // Verifica se o titular do cartão não está vazio
+        guard !cardHolderName.isEmpty else {
+            throw ValidationError.invalidCardHoldName
+        }
+
+        // Verifica se o saldo é maior que 0
+        guard amount > 0 else {
+            throw ValidationError.invalidAmount
+        }
+    }
+
+    override func processTransaction() throws {
+        try validate()
+    }
+}
+
+// MARK: - DigitalWalletPayment
+class DigitalWalletPayment: Transaction {
+    let digitalWalletNumber: Int
+
+    init(
+        digitalWalletNumber: Int,
+        amount: Double
+    ) {
+        self.digitalWalletNumber = digitalWalletNumber
+
+        super.init(amount: amount)
+    }
+
+    override func validate() throws {
+        // Verifica se existe número da conta digital
+        let convertDigitalWalletNumberToString = String(digitalWalletNumber)
+        guard !convertDigitalWalletNumberToString.isEmpty else {
+            throw ValidationError.invalidCardNumber
+        }
+
+        // Verifica se o saldo é maior que 0
+        guard amount > 0 else {
+            throw ValidationError.invalidAmount
+        }
+    }
+
+    override func processTransaction() throws {
+        try validate()
+    }
+}
 
 // MARK: - TransactionProcessor
 class TransactionProcessor {
@@ -280,37 +250,33 @@ let bankPayment = BankTransfer(
     destinationAccount: "Raphael",
     amount: 20)
 
-//let creditCardPayment = CreditCardPayment(
-//    cardNumber: 1111111111111111,
-//    cardExpirationString: "10/11/2024",
-//    cardSecurityCode: 111,
-//    cardHolderName: "Thyago",
-//    amount: 120
-//)
-//
-//let debitCardPayment = DebitCardPayment(
-//    cardNumber: 2222222222222222,
-//    cardExpirationString: "11/10/2025",
-//    cardSecurityCode: 222,
-//    cardHolderName: "Raphael",
-//    amount: 150
-//)
-//
-//let digitalWalletPayment = DigitalWalletPayment(
-//    digitalWalletNumber: 123456,
-//    amount: 200
-//)
+let creditCardPayment = CreditCardPayment(
+    cardNumber: 1111111111111111,
+    cardExpirationString: "10/11/2024",
+    cardSecurityCode: 111,
+    cardHolderName: "Thyago",
+    amount: 120
+)
+
+let debitCardPayment = DebitCardPayment(
+    cardNumber: 2222222222222222,
+    cardExpirationString: "11/10/2025",
+    cardSecurityCode: 222,
+    cardHolderName: "Raphael",
+    amount: 150
+)
+
+let digitalWalletPayment = DigitalWalletPayment(
+    digitalWalletNumber: 123456,
+    amount: 200
+)
 
 let transactions = [
-    bankPayment
+    bankPayment,
+    creditCardPayment,
+    debitCardPayment,
+    digitalWalletPayment
 ]
-
-//let transactions = [
-//    bankPayment,
-//    creditCardPayment,
-//    debitCardPayment,
-//    digitalWalletPayment
-//]
 
 let transactionProcessor = TransactionProcessor()
 transactionProcessor.processTransactions(transactions: transactions)
