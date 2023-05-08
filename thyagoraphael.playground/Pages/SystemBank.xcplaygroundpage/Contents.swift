@@ -158,6 +158,11 @@ class CreditCardPayment: Transaction {
         guard amount > 0 else {
             throw ValidationError.invalidAmount
         }
+        
+        // Verifica se a conta tem saldo
+        guard account.balance > 0 else {
+            throw ValidationError.invalidBalance
+        }
     }
 
     override func processTransaction() throws {
@@ -215,6 +220,11 @@ class DebitCardPayment: Transaction {
         guard amount > 0 else {
             throw ValidationError.invalidAmount
         }
+        
+        // Verifica se a conta tem saldo
+        guard account.balance > 0 else {
+            throw ValidationError.invalidBalance
+        }
     }
 
     override func processTransaction() throws {
@@ -247,6 +257,11 @@ class DigitalWalletPayment: Transaction {
         guard amount > 0 else {
             throw ValidationError.invalidAmount
         }
+        
+        // Verifica se a conta tem saldo
+        guard account.balance > 0 else {
+            throw ValidationError.invalidBalance
+        }
     }
 
     override func processTransaction() throws {
@@ -276,7 +291,6 @@ let bankPayment = BankTransfer(
     amount: 20,
     account: .init(balance: 0)
 )
-
 
 let creditCardPayment = CreditCardPayment(
     cardNumber: 1111111111111111,
