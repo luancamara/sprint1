@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+protocol TransactionProtocol {
+    func validate() throws
+    func processTransaction() throws
+}
