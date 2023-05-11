@@ -46,6 +46,7 @@ class Account {
 }
 
 // MARK: - Transaction
+// TODO: - Transformar isso num protocolo (Principio de Liskov)
 class Transaction {
     let account: Account
     let amount: Double
