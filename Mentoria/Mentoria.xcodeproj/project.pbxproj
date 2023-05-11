@@ -13,6 +13,13 @@
 		F60B1E162A0C816F00A4A99C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F60B1E152A0C816F00A4A99C /* Assets.xcassets */; };
 		F60B1E192A0C816F00A4A99C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F60B1E172A0C816F00A4A99C /* LaunchScreen.storyboard */; };
 		F60B1E242A0C83DE00A4A99C /* ValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60B1E232A0C83DE00A4A99C /* ValidationError.swift */; };
+		F60B1E262A0C844400A4A99C /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60B1E252A0C844400A4A99C /* Account.swift */; };
+		F60B1E282A0C846000A4A99C /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60B1E272A0C846000A4A99C /* Transaction.swift */; };
+		F60B1E2A2A0C84BE00A4A99C /* BankTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60B1E292A0C84BE00A4A99C /* BankTransfer.swift */; };
+		F60B1E2C2A0C884300A4A99C /* CreditCardPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60B1E2B2A0C884300A4A99C /* CreditCardPayment.swift */; };
+		F60B1E2E2A0C88DC00A4A99C /* DebitCardPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60B1E2D2A0C88DC00A4A99C /* DebitCardPayment.swift */; };
+		F60B1E302A0C891400A4A99C /* DigitalWalletPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60B1E2F2A0C891400A4A99C /* DigitalWalletPayment.swift */; };
+		F60B1E322A0C89D400A4A99C /* TransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60B1E312A0C89D400A4A99C /* TransactionProcessor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +31,13 @@
 		F60B1E182A0C816F00A4A99C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F60B1E1A2A0C816F00A4A99C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F60B1E232A0C83DE00A4A99C /* ValidationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationError.swift; sourceTree = "<group>"; };
+		F60B1E252A0C844400A4A99C /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		F60B1E272A0C846000A4A99C /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		F60B1E292A0C84BE00A4A99C /* BankTransfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankTransfer.swift; sourceTree = "<group>"; };
+		F60B1E2B2A0C884300A4A99C /* CreditCardPayment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardPayment.swift; sourceTree = "<group>"; };
+		F60B1E2D2A0C88DC00A4A99C /* DebitCardPayment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebitCardPayment.swift; sourceTree = "<group>"; };
+		F60B1E2F2A0C891400A4A99C /* DigitalWalletPayment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalWalletPayment.swift; sourceTree = "<group>"; };
+		F60B1E312A0C89D400A4A99C /* TransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionProcessor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +101,13 @@
 			children = (
 				F60B1E102A0C816E00A4A99C /* ViewController.swift */,
 				F60B1E232A0C83DE00A4A99C /* ValidationError.swift */,
+				F60B1E252A0C844400A4A99C /* Account.swift */,
+				F60B1E272A0C846000A4A99C /* Transaction.swift */,
+				F60B1E292A0C84BE00A4A99C /* BankTransfer.swift */,
+				F60B1E2B2A0C884300A4A99C /* CreditCardPayment.swift */,
+				F60B1E2D2A0C88DC00A4A99C /* DebitCardPayment.swift */,
+				F60B1E2F2A0C891400A4A99C /* DigitalWalletPayment.swift */,
+				F60B1E312A0C89D400A4A99C /* TransactionProcessor.swift */,
 			);
 			path = Feature;
 			sourceTree = "<group>";
@@ -161,9 +182,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F60B1E262A0C844400A4A99C /* Account.swift in Sources */,
+				F60B1E2A2A0C84BE00A4A99C /* BankTransfer.swift in Sources */,
+				F60B1E322A0C89D400A4A99C /* TransactionProcessor.swift in Sources */,
 				F60B1E112A0C816E00A4A99C /* ViewController.swift in Sources */,
+				F60B1E282A0C846000A4A99C /* Transaction.swift in Sources */,
+				F60B1E2E2A0C88DC00A4A99C /* DebitCardPayment.swift in Sources */,
 				F60B1E242A0C83DE00A4A99C /* ValidationError.swift in Sources */,
+				F60B1E2C2A0C884300A4A99C /* CreditCardPayment.swift in Sources */,
 				F60B1E0D2A0C816E00A4A99C /* AppDelegate.swift in Sources */,
+				F60B1E302A0C891400A4A99C /* DigitalWalletPayment.swift in Sources */,
 				F60B1E0F2A0C816E00A4A99C /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -305,7 +333,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B792F458DS;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Mentoria/Info.plist;
+				INFOPLIST_FILE = Mentoria/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -333,7 +361,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B792F458DS;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Mentoria/Info.plist;
+				INFOPLIST_FILE = Mentoria/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
