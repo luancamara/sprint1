@@ -119,7 +119,7 @@ class TransactionProcessor {
     }
 }
 
-class CreatyAccount {
+class CreateAccount {
     let fullName: String
     let cpf: Int
     let address: String
@@ -134,7 +134,13 @@ class CreatyAccount {
         self.dateBirth = dateBirth
         self.city = city
     }
+    
+    func contaOrigem() { }
+    
+    func contaDestino() { }
 }
+
+@discardableResult
 
 //func validateCreditCardPayment(credit: CreditCardPayment) {
 //
@@ -204,4 +210,3 @@ class CreatyAccount {
      Cada transação deve ter um método validate() que verifica se os dados da transação são válidos.
  
  */
-
